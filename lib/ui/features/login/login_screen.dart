@@ -2,9 +2,12 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 
 import "../dashboard/dashboard_screen.dart";
+import "login_controller.dart";
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
+  final thisController = Get.put(LoginController());
 
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -23,7 +26,8 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          body: SizedBox(height: Get.height,
+          body: SizedBox(
+            height: Get.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -60,16 +64,12 @@ class LoginScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    if(userNameController.text.toLowerCase() == "user" && passwordController.text.toLowerCase() == "user") {
-                      Get.offAll(() => DasBoardScreen());
-                    } else {
-                      Get.showSnackbar(const GetSnackBar(message:"Invalid Credentials", duration: Duration(seconds: 1),));
-                    }
+                    thisController.doLogin(
+                        userNameController.text.toLowerCase(), passwordController.text.toLowerCase());
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
-                    fixedSize: MaterialStateProperty.all<Size>(const Size(200, 48))
-                  ),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
+                      fixedSize: MaterialStateProperty.all<Size>(const Size(200, 48))),
                   child: const Text(
                     "Login",
                     style: TextStyle(
